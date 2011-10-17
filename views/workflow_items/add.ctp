@@ -6,7 +6,8 @@ $deleted = !empty($this->data['Condition']['is_deleted']) ? 'deleted, ' : null;
 ?>
 
 <div class="workflowItems form">
-<?php echo $this->Form->create('WorkflowItem');?>
+<?php 
+echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_items/add/'. $this->data['Workflow']['id']));?>
 	<h2><?php __('When a '.Inflector::humanize(Inflector::underscore($this->data['Condition']['model'])).' is '.$created.$viewed.$updated.$deleted.' the system will automatically...'); ?></h2></p>
 	<fieldset>
     <?php
