@@ -3,44 +3,44 @@
 	<h2><?php __('Automate Your Website with Workflows'); ?></h2>
 	<fieldset>
 	<?php
-		#echo $form->input('Condition.name', array('label' => __('A name so this is easy to find later.', true)));
-		echo $form->input('Condition.description', array('label' => __('Why are you creating this workflow?', true)));
+		#echo $this->Form->input('Condition.name', array('label' => __('A name so this is easy to find later.', true)));
+		echo $this->Form->input('Condition.description', array('label' => __('Why are you creating this workflow?', true)));
 	?>
     </fieldset>
     <fieldset>
  		<legend><?php __('What will trigger this workflow?');?></legend>
 		<p><?php __('When a record is...');?></p>
    	<?php
-		echo $form->input('Condition.is_create', array('label' => 'created.'));
-		#echo $form->input('Condition.is_read', array('label' => 'Fire when record is viewed.'));
-		echo $form->input('Condition.is_update', array('label' => 'udpated.'));
-		echo $form->input('Condition.is_delete', array('label' => 'deleted.'));
-		#echo $form->input('Condition.plugin', array('empty' => true, 'after' => ' Plugin called to match against on view'));
-		#echo $form->input('Condition.controller', array('after' => ' Controller name to match on view'));
-		#echo $form->input('Condition.action', array('after' => ' Controller method to match on view'));
+		echo $this->Form->input('Condition.is_create', array('label' => 'created.'));
+		#echo $this->Form->input('Condition.is_read', array('label' => 'Fire when record is viewed.'));
+		echo $this->Form->input('Condition.is_update', array('label' => 'udpated.'));
+		echo $this->Form->input('Condition.is_delete', array('label' => 'deleted.'));
+		#echo $this->Form->input('Condition.plugin', array('empty' => true, 'after' => ' Plugin called to match against on view'));
+		#echo $this->Form->input('Condition.controller', array('after' => ' Controller name to match on view'));
+		#echo $this->Form->input('Condition.action', array('after' => ' Controller method to match on view'));
 	?>
     </fieldset>
     <fieldset>
 		<p><?php __('...using this system.');?></p>
     <?php 
-		echo $form->input('plugin', array('empty' => true,
+		echo $this->Form->input('plugin', array('empty' => true,
 										  'ajax' => array(
 														'element' => 'select',
 														'json' => 'workflows/workflows/list_models', 
 														'rel' => 'ConditionModel'
 														)));  
-		echo $form->input('Condition.model', array('type' => 'select'));
+		echo $this->Form->input('Condition.model', array('type' => 'select'));
 	?>
     </fieldset>
     <fieldset>
  		<legend class="toggleClick"><?php __('Advanced (sub conditions)');?></legend>
     <?php
-		echo $form->input('Condition.condition', array('label' => 'Sub Condtions', 'after' => ' Sub-conditions to match against. Model.field.operator.value,Model.field.operator.value'));
+		echo $this->Form->input('Condition.condition', array('label' => 'Sub Condtions', 'after' => ' Sub-conditions to match against. Model.field.operator.value,Model.field.operator.value'));
 	?>
     </fieldset>
 <?php
-echo $form->input('Condition.bind_model', array('type' => 'hidden', 'value' => 'Workflows.Workflow'));
-echo $form->end('Submit');
+echo $this->Form->input('Condition.bind_model', array('type' => 'hidden', 'value' => 'Workflows.Workflow'));
+echo $this->Form->end('Submit');
 ?>
 </div>
 
@@ -97,7 +97,7 @@ $(function() {
 
 <?php /*
 // set the contextual menu items
-$menu->setValue(array(
+$this->Menu->setValue(array(
 	array(
 		'heading' => 'Conditions',
 		'items' => array(
