@@ -1,6 +1,6 @@
 <div class="workflows form">
 <?php echo $this->Form->create('Workflow');?>
-	<h2><?php __('Automate Your Website with Workflows'); ?></h2>
+	<h2><?php echo __('Automate Your Website with Workflows'); ?></h2>
 	<fieldset>
 	<?php
 		#echo $this->Form->input('Condition.name', array('label' => __('A name so this is easy to find later.', true)));
@@ -8,8 +8,8 @@
 	?>
     </fieldset>
     <fieldset>
- 		<legend><?php __('What will trigger this workflow?');?></legend>
-		<p><?php __('When a record is...');?></p>
+ 		<legend><?php echo __('What will trigger this workflow?');?></legend>
+		<p><?php echo __('When a record is...');?></p>
    	<?php
 		echo $this->Form->input('Condition.is_create', array('label' => 'created.'));
 		#echo $this->Form->input('Condition.is_read', array('label' => 'Fire when record is viewed.'));
@@ -21,7 +21,7 @@
 	?>
     </fieldset>
     <fieldset>
-		<p><?php __('...using this system.');?></p>
+		<p><?php echo __('...using this system.');?></p>
     <?php 
 		echo $this->Form->input('plugin', array('empty' => true,
 										  'ajax' => array(
@@ -33,7 +33,7 @@
 	?>
     </fieldset>
     <fieldset>
- 		<legend class="toggleClick"><?php __('Advanced (sub conditions)');?></legend>
+ 		<legend class="toggleClick"><?php echo __('Advanced (sub conditions)');?></legend>
     <?php
 		echo $this->Form->input('Condition.condition', array('label' => 'Sub Condtions', 'after' => ' Sub-conditions to match against. Model.field.operator.value,Model.field.operator.value'));
 	?>
@@ -82,7 +82,7 @@ $(function() {
 
  
 <div class="actions">
-	<h3><?php __('Actions'); ?></h3>
+	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 
 		<li><?php echo $this->Html->link(__('List Workflows', true), array('action' => 'index'));?></li>

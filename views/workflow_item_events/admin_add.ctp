@@ -1,7 +1,7 @@
 <div class="workflowItemEvents form">
 <?php echo $this->Form->create('WorkflowItemEvent');?>
 	<fieldset>
- 		<legend><?php __('Admin Add Workflow Item Event'); ?></legend>
+ 		<legend><?php echo __('Admin Add Workflow Item Event'); ?></legend>
 	<?php
 		echo $this->Form->input('workflow_item_id');
 		echo $this->Form->input('data');
@@ -15,7 +15,7 @@
 <?php echo $this->Form->end(__('Submit', true));?>
 </div>
 <div class="actions">
-	<h3><?php __('Actions'); ?></h3>
+	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 
 		<li><?php echo $this->Html->link(__('List Workflow Item Events', true), array('action' => 'index'));?></li>

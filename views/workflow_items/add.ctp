@@ -8,7 +8,7 @@ $deleted = !empty($this->request->data['Condition']['is_deleted']) ? 'deleted, '
 <div class="workflowItems form">
 <?php 
 echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_items/add/'. $this->request->data['Workflow']['id']));?>
-	<h2><?php __('When a '.Inflector::humanize(Inflector::underscore($this->request->data['Condition']['model'])).' is '.$created.$viewed.$updated.$deleted.' the system will automatically...'); ?></h2></p>
+	<h2><?php echo __('When a '.Inflector::humanize(Inflector::underscore($this->request->data['Condition']['model'])).' is '.$created.$viewed.$updated.$deleted.' the system will automatically...'); ?></h2></p>
 	<fieldset>
     <?php
 		#echo $this->Form->input('name');
@@ -16,7 +16,7 @@ echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_ite
 	?>
     </fieldset>
 	<fieldset>
- 		<legend><?php __('The task will happen by triggering this action.'); ?></legend>
+ 		<legend><?php echo __('The task will happen by triggering this action.'); ?></legend>
     <?php
 		echo $this->Form->input('WorkflowItem.plugin', array('type' => 'select', 'options' => $this->request->data['WorkflowItem']['plugins']));
 		echo $this->Form->input('WorkflowItem.model');
@@ -38,7 +38,7 @@ OrderItem[assignee_id] = CatalogItem.owner_id'));
 ?>
 </div>
 <div class="actions">
-	<h3><?php __('Actions'); ?></h3>
+	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('List Workflows', true), array('controller' => 'workflows', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Workflow', true), array('controller' => 'workflows', 'action' => 'add')); ?> </li>
