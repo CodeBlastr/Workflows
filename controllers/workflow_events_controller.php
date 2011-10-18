@@ -33,9 +33,9 @@ class WorkflowEventsController extends AppController {
 	}
 
 	function admin_add() {
-		if (!empty($this->data)) {
+		if (!empty($this->request->data)) {
 			$this->WorkflowEvent->create();
-			if ($this->WorkflowEvent->save($this->data)) {
+			if ($this->WorkflowEvent->save($this->request->data)) {
 				$this->Session->setFlash(__('The workflow event has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -49,20 +49,20 @@ class WorkflowEventsController extends AppController {
 	}
 
 	function admin_edit($id = null) {
-		if (!$id && empty($this->data)) {
+		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid workflow event', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		if (!empty($this->data)) {
-			if ($this->WorkflowEvent->save($this->data)) {
+		if (!empty($this->request->data)) {
+			if ($this->WorkflowEvent->save($this->request->data)) {
 				$this->Session->setFlash(__('The workflow event has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The workflow event could not be saved. Please, try again.', true));
 			}
 		}
-		if (empty($this->data)) {
-			$this->data = $this->WorkflowEvent->read(null, $id);
+		if (empty($this->request->data)) {
+			$this->request->data = $this->WorkflowEvent->read(null, $id);
 		}
 		$workflows = $this->WorkflowEvent->Workflow->find('list');
 		$creators = $this->WorkflowEvent->Creator->find('list');

@@ -18,9 +18,9 @@ class WorkflowsController extends AppController {
 	}
 
 	function add() {
-		if (!empty($this->data)) {
+		if (!empty($this->request->data)) {
 			try {
-				$this->Workflow->add($this->data);
+				$this->Workflow->add($this->request->data);
 				$this->Session->setFlash(__('Workflow saved', true));
 				$this->redirect(array('controller' => 'workflow_items', 'action' => 'add', $this->Workflow->id));
 			} catch (Exception $e) {
@@ -35,20 +35,20 @@ class WorkflowsController extends AppController {
 	}
 
 	function edit($id = null) {
-		if (!$id && empty($this->data)) {
+		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid workflow', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		if (!empty($this->data)) {
-			if ($this->Workflow->save($this->data)) {
+		if (!empty($this->request->data)) {
+			if ($this->Workflow->save($this->request->data)) {
 				$this->Session->setFlash(__('The workflow has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The workflow could not be saved. Please, try again.', true));
 			}
 		}
-		if (empty($this->data)) {
-			$this->data = $this->Workflow->read(null, $id);
+		if (empty($this->request->data)) {
+			$this->request->data = $this->Workflow->read(null, $id);
 		}
 		$conditions = $this->Workflow->Condition->find('list');
 		$creators = $this->Workflow->Creator->find('list');

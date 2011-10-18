@@ -1,14 +1,14 @@
 <?php 
-$created = !empty($this->data['Condition']['is_create']) ? 'created, ' : null;
-$viewed = !empty($this->data['Condition']['is_read']) ? 'viewed, ' : null;
-$updated = !empty($this->data['Condition']['is_updated']) ? 'updated, ' : null;
-$deleted = !empty($this->data['Condition']['is_deleted']) ? 'deleted, ' : null;
+$created = !empty($this->request->data['Condition']['is_create']) ? 'created, ' : null;
+$viewed = !empty($this->request->data['Condition']['is_read']) ? 'viewed, ' : null;
+$updated = !empty($this->request->data['Condition']['is_updated']) ? 'updated, ' : null;
+$deleted = !empty($this->request->data['Condition']['is_deleted']) ? 'deleted, ' : null;
 ?>
 
 <div class="workflowItems form">
 <?php 
-echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_items/add/'. $this->data['Workflow']['id']));?>
-	<h2><?php __('When a '.Inflector::humanize(Inflector::underscore($this->data['Condition']['model'])).' is '.$created.$viewed.$updated.$deleted.' the system will automatically...'); ?></h2></p>
+echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_items/add/'. $this->request->data['Workflow']['id']));?>
+	<h2><?php __('When a '.Inflector::humanize(Inflector::underscore($this->request->data['Condition']['model'])).' is '.$created.$viewed.$updated.$deleted.' the system will automatically...'); ?></h2></p>
 	<fieldset>
     <?php
 		#echo $this->Form->input('name');
@@ -18,7 +18,7 @@ echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_ite
 	<fieldset>
  		<legend><?php __('The task will happen by triggering this action.'); ?></legend>
     <?php
-		echo $this->Form->input('WorkflowItem.plugin', array('type' => 'select', 'options' => $this->data['WorkflowItem']['plugins']));
+		echo $this->Form->input('WorkflowItem.plugin', array('type' => 'select', 'options' => $this->request->data['WorkflowItem']['plugins']));
 		echo $this->Form->input('WorkflowItem.model');
 		#echo $this->Form->input('controller');
 		echo $this->Form->input('WorkflowItem.action');

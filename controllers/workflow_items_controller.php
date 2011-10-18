@@ -17,9 +17,9 @@ class WorkflowItemsController extends AppController {
 	}
 
 	function add($workflowId = null) {
-		if (!empty($this->data)) :
+		if (!empty($this->request->data)) :
 			$this->WorkflowItem->create();
-			if ($this->WorkflowItem->save($this->data)) :
+			if ($this->WorkflowItem->save($this->request->data)) :
 				$this->Session->setFlash(__('The workflow item has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			else :
@@ -31,7 +31,7 @@ class WorkflowItemsController extends AppController {
 			$this->Session->setFlash(__('Invalid workflow. Please choose again.', true));
 			$this->redirect(array('controller' => 'workflows', 'action' => 'index'));
 		else :
-			$this->data = $this->WorkflowItem->Workflow->find('first', array(
+			$this->request->data = $this->WorkflowItem->Workflow->find('first', array(
 				'conditions' => array(
 					'Workflow.id' => $workflowId,
 					),
@@ -39,9 +39,9 @@ class WorkflowItemsController extends AppController {
 					'Condition',
 					),
 				));
-			$this->data['WorkflowItem']['workflow_id'] = $this->data['Workflow']['id'];
+			$this->request->data['WorkflowItem']['workflow_id'] = $this->request->data['Workflow']['id'];
 			
-			$this->data['WorkflowItem']['plugins'] = $this->WorkflowItem->Workflow->plugins();
+			$this->request->data['WorkflowItem']['plugins'] = $this->WorkflowItem->Workflow->plugins();
 			#$parentWorkflowItems = $this->WorkflowItem->ParentWorkflowItem->find('list');
 			$this->set(compact('workflow'));
 			$this->set('page_title_for_layout', __('Workflow Tasks', true));
@@ -50,20 +50,20 @@ class WorkflowItemsController extends AppController {
 	}
 
 	function edit($id = null) {
-		if (!$id && empty($this->data)) {
+		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid workflow item', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		if (!empty($this->data)) {
-			if ($this->WorkflowItem->save($this->data)) {
+		if (!empty($this->request->data)) {
+			if ($this->WorkflowItem->save($this->request->data)) {
 				$this->Session->setFlash(__('The workflow item has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The workflow item could not be saved. Please, try again.', true));
 			}
 		}
-		if (empty($this->data)) {
-			$this->data = $this->WorkflowItem->read(null, $id);
+		if (empty($this->request->data)) {
+			$this->request->data = $this->WorkflowItem->read(null, $id);
 		}
 		$workflows = $this->WorkflowItem->Workflow->find('list');
 		$parentWorkflowItems = $this->WorkflowItem->ParentWorkflowItem->find('list');
