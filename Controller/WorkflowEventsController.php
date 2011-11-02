@@ -2,7 +2,7 @@
 class WorkflowEventsController extends AppController {
 
 	var $name = 'WorkflowEvents';
-	var $allowedActions = array('admin_run_queue');
+	var $allowedActions = array('admin_run_queue', 'run_queue');
 
 /** 
  * Creates work flow items events, sets untriggered work flows to triggered, fires untriggered workflow item events, and sets fired workflow item events to triggered.
@@ -19,6 +19,19 @@ class WorkflowEventsController extends AppController {
 		$this->layout = 'ajax';
 	}
 	
+	/*
+	 * function run_queue is same as admin_run_queue
+	 * it is created becoz admin prefix is not supported in zuha 
+	 */
+	function run_queue() {
+		if ($triggered = $this->WorkflowEvent->runQueue()) {
+			$this->set('triggered', $triggered);
+		} else {
+			$this->set('triggered', false);
+		}
+		$this->layout = 'ajax';
+	}
+
 	function admin_index() {
 		$this->WorkflowEvent->recursive = 0;
 		$this->set('workflowEvents', $this->paginate());

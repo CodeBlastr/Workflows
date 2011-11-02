@@ -147,35 +147,34 @@ class Workflow extends AppModel {
 	 */
 	function plugins() {
 		foreach (App::objects('plugin') as $plugin) :
-			$plugins[Inflector::underscore($plugin)] = Inflector::humanize(Inflector::underscore($plugin));
+			$plugins[$plugin] = Inflector::humanize(Inflector::underscore($plugin));
 		endforeach;
-		
-		unset($plugins['acl_extras']);
-		unset($plugins['api_generator']);
-		unset($plugins['calendars']);
-		unset($plugins['categories']);
-		unset($plugins['events']);
-		unset($plugins['facebook']);
-		unset($plugins['favorites']);
-		unset($plugins['forms']);
-		unset($plugins['forum']);
-		unset($plugins['locations']);
-		unset($plugins['maps']);
-		unset($plugins['menus']);
-		unset($plugins['news']);
-		unset($plugins['notifications']);
-		unset($plugins['permissions']);
-		unset($plugins['recaptcha']);
-		unset($plugins['reports']);
-		unset($plugins['rss']);
-		unset($plugins['search']);
-		unset($plugins['searchable']);
-		unset($plugins['shipping']);
-		unset($plugins['sitemaps']);
-		unset($plugins['social']);
-		unset($plugins['tags']);
-		unset($plugins['utils']);
-		unset($plugins['workflows']);
+
+		unset($plugins['AclExtras']);
+		unset($plugins['Calendars']);
+		unset($plugins['Categories']);
+		unset($plugins['Events']);
+		unset($plugins['Facebook']);
+		unset($plugins['Favorites']);
+		unset($plugins['Forms']);
+		unset($plugins['Forum']);
+		unset($plugins['Locations']);
+		unset($plugins['Maps']);
+		unset($plugins['Menus']);
+		unset($plugins['News']);
+		unset($plugins['Notifications']);
+		unset($plugins['Privileges']);
+		unset($plugins['Recaptcha']);
+		unset($plugins['Reports']);
+		unset($plugins['Rss']);
+		unset($plugins['Search']);
+		unset($plugins['Searchable']);
+		unset($plugins['Shipping']);
+		unset($plugins['Sitemaps']);
+		unset($plugins['Social']);
+		unset($plugins['Tags']);
+		unset($plugins['Utils']);
+		unset($plugins['Workflows']);
 		
 		return $plugins;
 	}
