@@ -106,7 +106,7 @@ class Workflow extends AppModel {
 			}
 			# run the queue three times so that if the delay iz zero, the first item goes out immediately
 			# later removed the auto queue running because it causes $this->id to be wrong, so redirects are wrong. 
-			# $this->WorkflowEvent->runQueue();
+			$this->WorkflowEvent->runQueue();
 			return true;
 		} else {
 			return false;

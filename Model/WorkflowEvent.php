@@ -161,7 +161,8 @@ class WorkflowEvent extends AppModel {
 			
 			#import the model and fire the function
 			$importModel = (!empty($plugin) ? $plugin.'.'.$model : $model);
-			$this->$model = ClassRegistry::init($importModel);
+			App::import('Model', $importModel);
+			$this->$model = new $model();
 			
 			# This is the actual firing of the database driven event function.
 			$this->$model->$action($values);
