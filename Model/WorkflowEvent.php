@@ -34,6 +34,8 @@ class WorkflowEvent extends AppModel {
  * @todo					Need to send the admin an email message if this fails. Its mission critical.  (hmm... there's an idea... What if the admin could set certain areas to mission critical and get messages whenever they fail... interesting.)
  */
 	function runQueue() {
+		$orig_id = $this->id;
+		
 		$workflowEvents = $this->find('all', array(
 			'conditions' => array(
 				'WorkflowEvent.is_triggered' => 0,
@@ -56,6 +58,8 @@ class WorkflowEvent extends AppModel {
 		# handle the item events second so that any just created get fired immediately '
 		$events = $this->handleWorkflowItemEvents(); 
 		$events = (!empty($eventOutput) && !empty($events) ? array_merge($eventOutput, $events) : $events);
+		$this->id = $orig_id;
+		
 		if (!empty($events)) {
 			return $events;
 		} else {
