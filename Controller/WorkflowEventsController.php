@@ -1,8 +1,9 @@
 <?php
 class WorkflowEventsController extends AppController {
 
-	var $name = 'WorkflowEvents';
-	var $allowedActions = array('admin_run_queue', 'run_queue');
+	public $name = 'WorkflowEvents';
+	public $uses = 'Workflows.WorkflowEvent';
+	public $allowedActions = array('admin_run_queue', 'run_queue');
 
 /** 
  * Creates work flow items events, sets untriggered work flows to triggered, fires untriggered workflow item events, and sets fired workflow item events to triggered.

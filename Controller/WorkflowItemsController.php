@@ -1,7 +1,8 @@
 <?php
 class WorkflowItemsController extends AppController {
 
-	var $name = 'WorkflowItems';
+	public $name = 'WorkflowItems';
+	public $uses = 'Workflows.WorkflowItem';
 
 	function index() {
 		$this->WorkflowItem->recursive = 0;

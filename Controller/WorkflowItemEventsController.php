@@ -1,7 +1,8 @@
 <?php
 class WorkflowItemEventsController extends AppController {
 
-	var $name = 'WorkflowItemEvents';
+	public $name = 'WorkflowItemEvents';
+	public $uses = 'Workflows.WorkflowItemEvent';
 
 	function admin_index() {
 		$this->WorkflowItemEvent->recursive = 0;
