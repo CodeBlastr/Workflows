@@ -11,19 +11,6 @@ class WorkflowEventsController extends AppController {
  * @return {string} 		returns the events (both workflow, and workflow item) that were triggered.
  * @return [bool}			returns a success variable set to true or false.
  */
-	function admin_run_queue() {
-		if ($triggered = $this->WorkflowEvent->runQueue()) {
-			$this->set('triggered', $triggered);
-		} else {
-			$this->set('triggered', false);
-		}
-		$this->layout = 'ajax';
-	}
-	
-	/*
-	 * function run_queue is same as admin_run_queue
-	 * it is created becoz admin prefix is not supported in zuha 
-	 */
 	function run_queue() {
 		if ($triggered = $this->WorkflowEvent->runQueue()) {
 			$this->set('triggered', $triggered);
@@ -33,12 +20,12 @@ class WorkflowEventsController extends AppController {
 		$this->layout = 'ajax';
 	}
 
-	function admin_index() {
+	function index() {
 		$this->WorkflowEvent->recursive = 0;
 		$this->set('workflowEvents', $this->paginate());
 	}
 
-	function admin_view($id = null) {
+	function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid workflow event', true));
 			$this->redirect(array('action' => 'index'));
@@ -46,7 +33,7 @@ class WorkflowEventsController extends AppController {
 		$this->set('workflowEvent', $this->WorkflowEvent->read(null, $id));
 	}
 
-	function admin_add() {
+	function add() {
 		if (!empty($this->request->data)) {
 			$this->WorkflowEvent->create();
 			if ($this->WorkflowEvent->save($this->request->data)) {
@@ -62,7 +49,7 @@ class WorkflowEventsController extends AppController {
 		$this->set(compact('workflows', 'creators', 'modifers'));
 	}
 
-	function admin_edit($id = null) {
+	function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid workflow event', true));
 			$this->redirect(array('action' => 'index'));
@@ -84,7 +71,7 @@ class WorkflowEventsController extends AppController {
 		$this->set(compact('workflows', 'creators', 'modifers'));
 	}
 
-	function admin_delete($id = null) {
+	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for workflow event', true));
 			$this->redirect(array('action'=>'index'));
