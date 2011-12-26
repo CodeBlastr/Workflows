@@ -81,23 +81,26 @@ $(function() {
 </script>
 
  
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('List Workflows', true), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Conditions', true), array('controller' => 'conditions', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Condition', true), array('controller' => 'conditions', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Workflow Events', true), array('controller' => 'workflow_events', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Workflow Event', true), array('controller' => 'workflow_events', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Workflow Items', true), array('controller' => 'workflow_items', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Workflow Item', true), array('controller' => 'workflow_items', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
-
+<?php 
+// set the contextual menu items
+$this->set('context_menu', array('menus' => array(
+	array(
+		'heading' => 'Workflows',
+		'items' => array(
+			$this->Html->link(__('List Workflows', true), array('action' => 'index')),
+			$this->Html->link(__('List Conditions', true), array('controller' => 'conditions', 'action' => 'index')),
+			$this->Html->link(__('New Condition', true), array('controller' => 'conditions', 'action' => 'add')),
+			$this->Html->link(__('List Workflow Events', true), array('controller' => 'workflow_events', 'action' => 'index')),
+			$this->Html->link(__('New Workflow Event', true), array('controller' => 'workflow_events', 'action' => 'add')),
+			$this->Html->link(__('List Workflow Items', true), array('controller' => 'workflow_items', 'action' => 'index')),
+			$this->Html->link(__('New Workflow Item', true), array('controller' => 'workflow_items', 'action' => 'add')),
+			)
+		),
+	)));
+?>
 <?php /*
 // set the contextual menu items
-echo $this->Element('context_menu', array('menus' => array(
+$this->set('context_menu', array('menus' => array(
 	array(
 		'heading' => 'Conditions',
 		'items' => array(
