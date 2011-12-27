@@ -56,8 +56,8 @@ class WorkflowEvent extends AppModel {
 			}
 		} 
 		# handle the item events second so that any just created get fired immediately '
-		$events = $this->handleWorkflowItemEvents(); 
-		$events = (!empty($eventOutput) && !empty($events) ? array_merge($eventOutput, $events) : $events);
+		$this->handleWorkflowItemEvents(); 
+		$events = (!empty($eventOutput) && !empty($this->workflowItemEvents) ? array_merge($eventOutput, $this->workflowItemEvents) : $this->workflowItemEvents);
 		$this->id = $orig_id;
 		
 		if (!empty($events)) {
@@ -86,14 +86,14 @@ class WorkflowEvent extends AppModel {
 	}
 	
 
-	/**
-	 * Function to create workflow item events (these are the events which trigger items)
-	 *
-	 * @param {workflowItems} 		A data array of workflorItems
-	 * @param {data}				The data from the original form entry.
-	 * @return {bool}				True if all saved correctly, false if not.
-	 * @todo						We should put in a roll back function which deletes all of the created items if one should fail.
-	 */
+/**
+ * Function to create workflow item events (these are the events which trigger items)
+ *
+ * @param {workflowItems} 		A data array of workflorItems
+ * @param {data}				The data from the original form entry.
+ * @return {bool}				True if all saved correctly, false if not.
+ * @todo						We should put in a roll back function which deletes all of the created items if one should fail.
+ */
 	function createWorkflowItemEvents($workflowItems, $data) {
 		foreach ($workflowItems as $workflowItem) {
 			$workflowItemEvent['WorkflowItemEvent']['workflow_item_id'] = $workflowItem['id'];
@@ -105,6 +105,7 @@ class WorkflowEvent extends AppModel {
 			$this->Workflow->WorkflowItem->WorkflowItemEvent->create();
 			if ($this->Workflow->WorkflowItem->WorkflowItemEvent->save($workflowItemEvent)) {
 				$itemEvents[] = $this->Workflow->WorkflowItem->WorkflowItemEvent->id;
+				$this->handleWorkflowItemEvents();
 				$return = true;
 			} else {
 				# roll back
@@ -131,7 +132,7 @@ class WorkflowEvent extends AppModel {
 				'WorkflowItemEvent.is_triggered' => 0,
 				'OR' => array(
 					'WorkflowItemEvent.trigger_time' => null,
-					'WorkflowItemEvent.trigger_time <' => date('Y-m-d H:i:s'),
+					'WorkflowItemEvent.trigger_time <=' => date('Y-m-d H:i:s'),
 					),
 				),
 			'contain' => array(
@@ -139,7 +140,7 @@ class WorkflowEvent extends AppModel {
 				),
 			));
 		if (!empty($workflowItemEvents) && $this->triggerWorkflowItemEvents($workflowItemEvents)) {
-			return $workflowItemEvents;
+			return $this->workflowItemEvents;
 		} else {
 			return false;
 		}
