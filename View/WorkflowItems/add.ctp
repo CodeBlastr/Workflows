@@ -1,12 +1,12 @@
-<?php 
+<?php
 $created = !empty($this->request->data['Condition']['is_create']) ? 'created, ' : null;
 $viewed = !empty($this->request->data['Condition']['is_read']) ? 'viewed, ' : null;
-$updated = !empty($this->request->data['Condition']['is_updated']) ? 'updated, ' : null;
-$deleted = !empty($this->request->data['Condition']['is_deleted']) ? 'deleted, ' : null;
+$updated = !empty($this->request->data['Condition']['is_update']) ? 'updated, ' : null;
+$deleted = !empty($this->request->data['Condition']['is_delete']) ? 'deleted, ' : null;
 ?>
 
 <div class="workflowItems form">
-<?php 
+<?php
 echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_items/add/'. $this->request->data['Workflow']['id']));?>
 	<h2><?php echo __('When a '.Inflector::humanize(Inflector::underscore($this->request->data['Condition']['model'])).' is '.$created.$viewed.$updated.$deleted.' the system will automatically...'); ?></h2></p>
 	<fieldset>
@@ -31,7 +31,7 @@ OrderItem[assignee_id] = CatalogItem.owner_id'));
 		echo $this->Form->input('WorkflowItem.order');
 	?>
 	</fieldset>
-<?php 
+<?php
 	#echo $this->Form->input('parent_id');
 	echo $this->Form->input('workflow_id', array('type' => 'hidden'));
 	echo $this->Form->end(__('Submit', true));
