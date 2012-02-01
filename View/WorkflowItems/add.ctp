@@ -11,7 +11,7 @@ echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_ite
 	<h2><?php echo __('When a '.Inflector::humanize(Inflector::underscore($this->request->data['Condition']['model'])).' is '.$created.$viewed.$updated.$deleted.' the system will automatically...'); ?></h2></p>
 	<fieldset>
     <?php
-		#echo $this->Form->input('name');
+		echo $this->Form->input('name'); # <-- this was commented out until 1.31.2012... it is required to be notempty by the model. why was it commented out? ^JB
 		echo $this->Form->input('description', array('label' => 'What will this task do?'));
 	?>
     </fieldset>
