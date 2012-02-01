@@ -172,7 +172,7 @@
 
 	<div class="actions">
 		<ul>
-			<li><?php echo $this->Html->link(__('New Workflow Item', true), array('controller' => 'workflow_items', 'action' => 'add', $workflowItem['id']));?> </li>
+			<li><?php echo $this->Html->link(__('New Workflow Item', true), array('controller' => 'workflow_items', 'action' => 'add', $workflow['Workflow']['id']));?> </li>
 		</ul>
 	</div>
 </div>
