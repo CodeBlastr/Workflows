@@ -1,10 +1,3 @@
-<?php
-$created = !empty($this->request->data['Condition']['is_create']) ? 'created, ' : null;
-$viewed = !empty($this->request->data['Condition']['is_read']) ? 'viewed, ' : null;
-$updated = !empty($this->request->data['Condition']['is_update']) ? 'updated, ' : null;
-$deleted = !empty($this->request->data['Condition']['is_delete']) ? 'deleted, ' : null;
-?>
-
 <div class="workflowItems form">
 <?php
 echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_items/add/'. $this->request->data['Workflow']['id']));?>

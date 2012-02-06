@@ -2,15 +2,10 @@
 	<h2><?php echo __('Workflows');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('description');?></th>
-			<th><?php echo $this->Paginator->sort('condition_id');?></th>
-			<th><?php echo $this->Paginator->sort('creator_id');?></th>
-			<th><?php echo $this->Paginator->sort('modifier_id');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php echo __('Actions');?></th>
+		<th><?php echo $this->Paginator->sort('name');?></th>
+		<th><?php echo $this->Paginator->sort('description');?></th>
+		<th><?php echo $this->Paginator->sort('condition_id');?></th>
+		<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
 	$i = 0;
@@ -21,20 +16,11 @@
 		}
 	?>
 	<tr<?php echo $class;?>>
-		<td><?php echo $workflow['Workflow']['id']; ?>&nbsp;</td>
 		<td><?php echo $workflow['Workflow']['name']; ?>&nbsp;</td>
 		<td><?php echo $workflow['Workflow']['description']; ?>&nbsp;</td>
 		<td>
 			<?php echo $this->Html->link($workflow['Condition']['name'], array('controller' => 'conditions', 'action' => 'view', $workflow['Condition']['id'])); ?>
 		</td>
-		<td>
-			<?php echo $this->Html->link($workflow['Creator']['username'], array('controller' => 'users', 'action' => 'view', $workflow['Creator']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $this->Html->link($workflow['Modifier']['username'], array('controller' => 'users', 'action' => 'view', $workflow['Modifier']['id'])); ?>
-		</td>
-		<td><?php echo $workflow['Workflow']['created']; ?>&nbsp;</td>
-		<td><?php echo $workflow['Workflow']['modified']; ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View', true), array('action' => 'view', $workflow['Workflow']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $workflow['Workflow']['id'])); ?>
@@ -45,10 +31,22 @@
 	</table>
 </div>
 <?php echo $this->Element('paging'); ?>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Workflow', true), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Workflow Items', true), array('controller' => 'workflow_items', 'action' => 'index')); ?> </li>
-	</ul>
-</div>
+
+
+ 
+<?php 
+// set the contextual menu items
+$this->set('context_menu', array('menus' => array(
+	array(
+		'heading' => 'Workflows',
+		'items' => array(
+			$this->Html->link(__('Add'), array('action' => 'add'), array('class' => 'add')),
+			)
+		),
+	array(
+		'heading' => 'Workflow Items',
+		'items' => array(
+			$this->Html->link(__('List'), array('controller' => 'workflow_items', 'action' => 'index')),
+			)
+		),
+	))); ?>
