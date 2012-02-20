@@ -96,16 +96,4 @@ $this->set('context_menu', array('menus' => array(
 			$this->Html->link(__('New Workflow Item', true), array('controller' => 'workflow_items', 'action' => 'add')),
 			)
 		),
-	)));
-?>
-<?php /*
-// set the contextual menu items
-$this->set('context_menu', array('menus' => array(
-	array(
-		'heading' => 'Conditions',
-		'items' => array(
-			$this->Html->link(__('List Conditions', true), array('plugin' => null, 'controller' => 'conditions', 'action' => 'index')),
-			)
-		),
-	)));*/
-?> 
+	))); ?>

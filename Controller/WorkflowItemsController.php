@@ -18,20 +18,19 @@ class WorkflowItemsController extends AppController {
 	}
 
 	function add($workflowId = null) {
-		if (!empty($this->request->data)) :
-			$this->WorkflowItem->create();
-			if ($this->WorkflowItem->save($this->request->data)) :
+		if (!empty($this->request->data)) {
+			if ($this->WorkflowItem->save($this->request->data)) {
 				$this->Session->setFlash(__('The workflow item has been saved', true));
 				$this->redirect(array('action' => 'index'));
-			else :
+			} else {
 				$this->Session->setFlash(__('The workflow item could not be saved. Please, try again.', true));
-			endif;
-		endif;
+			}
+		}
 		
-		if (empty($workflowId)) :
+		if (empty($workflowId)) {
 			$this->Session->setFlash(__('Invalid workflow. Please choose again.', true));
 			$this->redirect(array('controller' => 'workflows', 'action' => 'index'));
-		else :
+		} else {
 			$this->request->data = $this->WorkflowItem->Workflow->find('first', array(
 				'conditions' => array(
 					'Workflow.id' => $workflowId,
@@ -47,7 +46,12 @@ class WorkflowItemsController extends AppController {
 			$this->set(compact('workflow'));
 			$this->set('page_title_for_layout', __('Workflow Tasks', true));
 			$this->set('title_for_layout', __('Workflow Task Form', true)); 
-		endif;
+			$created = !empty($this->request->data['Condition']['is_create']) ? 'created, ' : null;
+			$viewed = !empty($this->request->data['Condition']['is_read']) ? 'viewed, ' : null;
+			$updated = !empty($this->request->data['Condition']['is_update']) ? 'updated, ' : null;
+			$deleted = !empty($this->request->data['Condition']['is_delete']) ? 'deleted, ' : null;
+			$this->set(compact('created', 'viewed', 'updated', 'deleted'));
+		}
 	}
 
 	function edit($id = null) {
