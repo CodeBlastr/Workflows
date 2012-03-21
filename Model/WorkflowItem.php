@@ -1,8 +1,8 @@
 <?php
-class WorkflowItem extends AppModel {
-	var $name = 'WorkflowItem';
-	var $displayField = 'name';
-	var $validate = array(
+class WorkflowItem extends WorkflowsAppModel {
+	public $name = 'WorkflowItem';
+	public $displayField = 'name';
+	public $validate = array(
 		'workflow_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
@@ -56,7 +56,7 @@ class WorkflowItem extends AppModel {
 	);
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Workflow' => array(
 			'className' => 'Workflows.Workflow',
 			'foreignKey' => 'workflow_id',
@@ -87,7 +87,7 @@ class WorkflowItem extends AppModel {
 		)
 	);
 
-	var $hasMany = array(
+	public $hasMany = array(
 		'WorkflowItemEvent' => array(
 			'className' => 'Workflows.WorkflowItemEvent',
 			'foreignKey' => 'workflow_item_id',

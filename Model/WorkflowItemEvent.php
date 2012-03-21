@@ -1,9 +1,9 @@
 <?php
-class WorkflowItemEvent extends AppModel {
-	var $name = 'WorkflowItemEvent';
+class WorkflowItemEvent extends WorkflowsAppModel {
+	public $name = 'WorkflowItemEvent';
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'WorkflowItem' => array(
 			'className' => 'Workflows.WorkflowItem',
 			'foreignKey' => 'workflow_item_id',

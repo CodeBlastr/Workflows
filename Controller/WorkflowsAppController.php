@@ -2,4 +2,3 @@
 class WorkflowsAppController extends AppController {
 	
 }
-?>

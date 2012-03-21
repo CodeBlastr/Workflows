@@ -1,15 +1,15 @@
 <?php
-class WorkflowItemsController extends AppController {
+class WorkflowItemsController extends WorkflowsAppController {
 
 	public $name = 'WorkflowItems';
 	public $uses = 'Workflows.WorkflowItem';
 
-	function index() {
+	public function index() {
 		$this->WorkflowItem->recursive = 0;
 		$this->set('workflowItems', $this->paginate());
 	}
 
-	function view($id = null) {
+	public function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid workflow item', true));
 			$this->redirect(array('action' => 'index'));
@@ -17,7 +17,7 @@ class WorkflowItemsController extends AppController {
 		$this->set('workflowItem', $this->WorkflowItem->read(null, $id));
 	}
 
-	function add($workflowId = null) {
+	public function add($workflowId = null) {
 		if (!empty($this->request->data)) {
 			if ($this->WorkflowItem->save($this->request->data)) {
 				$this->Session->setFlash(__('The workflow item has been saved', true));
@@ -43,7 +43,6 @@ class WorkflowItemsController extends AppController {
 			
 			$this->request->data['WorkflowItem']['plugins'] = $this->WorkflowItem->Workflow->plugins();
 			#$parentWorkflowItems = $this->WorkflowItem->ParentWorkflowItem->find('list');
-			$this->set(compact('workflow'));
 			$this->set('page_title_for_layout', __('Workflow Tasks', true));
 			$this->set('title_for_layout', __('Workflow Task Form', true)); 
 			$created = !empty($this->request->data['Condition']['is_create']) ? 'created, ' : null;
@@ -54,7 +53,7 @@ class WorkflowItemsController extends AppController {
 		}
 	}
 
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid workflow item', true));
 			$this->redirect(array('action' => 'index'));
@@ -77,7 +76,7 @@ class WorkflowItemsController extends AppController {
 		$this->set(compact('workflows', 'parentWorkflowItems', 'creators', 'modifiers'));
 	}
 
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for workflow item', true));
 			$this->redirect(array('action'=>'index'));

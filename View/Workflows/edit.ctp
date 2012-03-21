@@ -40,5 +40,4 @@ $this->set('context_menu', array('menus' => array(
 			$this->Html->link(__('List', true), array('controller' => 'workflow_events', 'action' => 'index')),
 			)
 		),
-	)));
-?>
+	))); ?>

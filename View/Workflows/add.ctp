@@ -23,12 +23,7 @@
     <fieldset>
 		<p><?php echo __('...using this system.');?></p>
     <?php 
-		echo $this->Form->input('plugin', array('empty' => true,
-										  'ajax' => array(
-														'element' => 'select',
-														'json' => 'workflows/workflows/list_models', 
-														'rel' => 'ConditionModel'
-														)));  
+		echo $this->Form->input('plugin', array('empty' => true));  
 		echo $this->Form->input('Condition.model', array('type' => 'select'));
 	?>
     </fieldset>
@@ -77,7 +72,24 @@ $(function() {
 			$('#ConditionModel').parent().parent().hide();
 	  }
 	});
+	
+	
+	$('#WorkflowPlugin').change(function(){
+		var url = '/workflows/workflows/list_models/' + $(this).val() + '.json';
+		$.getJSON(url, function(data){
+			var items = [];
+ 			$.each(data['out'], function(key, val) {
+				if (val['value']) { value = val['value']; } else { value = val['name']; }
+				items += '<option value="' + value + '">' + val['name'] + '</option>';
+			});
+			$("#ConditionModel").html(items);
+	    });
+	});
+		
+		
 });
+
+
 </script>
 
  

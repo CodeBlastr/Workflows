@@ -1,15 +1,15 @@
 <?php
-class WorkflowItemEventsController extends AppController {
+class WorkflowItemEventsController extends WorkflowsAppController {
 
 	public $name = 'WorkflowItemEvents';
 	public $uses = 'Workflows.WorkflowItemEvent';
 
-	function index() {
+	public function index() {
 		$this->WorkflowItemEvent->recursive = 0;
 		$this->set('workflowItemEvents', $this->paginate());
 	}
 
-	function view($id = null) {
+	public function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid workflow item event', true));
 			$this->redirect(array('action' => 'index'));
@@ -17,7 +17,7 @@ class WorkflowItemEventsController extends AppController {
 		$this->set('workflowItemEvent', $this->WorkflowItemEvent->read(null, $id));
 	}
 
-	function add() {
+	public function add() {
 		if (!empty($this->request->data)) {
 			$this->WorkflowItemEvent->create();
 			if ($this->WorkflowItemEvent->save($this->request->data)) {
@@ -33,7 +33,7 @@ class WorkflowItemEventsController extends AppController {
 		$this->set(compact('workflowItems', 'creators', 'modifiers'));
 	}
 
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid workflow item event', true));
 			$this->redirect(array('action' => 'index'));
@@ -55,7 +55,7 @@ class WorkflowItemEventsController extends AppController {
 		$this->set(compact('workflowItems', 'creators', 'modifiers'));
 	}
 
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for workflow item event', true));
 			$this->redirect(array('action'=>'index'));

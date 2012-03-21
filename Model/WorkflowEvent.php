@@ -1,9 +1,9 @@
 <?php
-class WorkflowEvent extends AppModel {
-	var $name = 'WorkflowEvent';
+class WorkflowEvent extends WorkflowsAppModel {
+	public $name = 'WorkflowEvent';
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Workflow' => array(
 			'className' => 'Workflows.Workflow',
 			'foreignKey' => 'workflow_id',
@@ -33,7 +33,7 @@ class WorkflowEvent extends AppModel {
  * @return [bool}			returns true if run, false if there was an error
  * @todo					Need to send the admin an email message if this fails. Its mission critical.  (hmm... there's an idea... What if the admin could set certain areas to mission critical and get messages whenever they fail... interesting.)
  */
-	function runQueue() {
+	public function runQueue() {
 		$orig_id = $this->id;
 		
 		$workflowEvents = $this->find('all', array(
@@ -69,7 +69,7 @@ class WorkflowEvent extends AppModel {
 	
 	
 	
-	function handleWorkflowEvents($workflowEvents) {
+	public function handleWorkflowEvents($workflowEvents) {
 		foreach ($workflowEvents as $workflowEvent) {
 			#$this->handleWorkflowEvent($workflowEvent['WorkflowEvent']['id']);
 			if ($this->createWorkflowItemEvents($workflowEvent['Workflow']['WorkflowItem'], $workflowEvent['WorkflowEvent']['data'])) {
@@ -94,7 +94,7 @@ class WorkflowEvent extends AppModel {
  * @return {bool}				True if all saved correctly, false if not.
  * @todo						We should put in a roll back function which deletes all of the created items if one should fail.
  */
-	function createWorkflowItemEvents($workflowItems, $data) {
+	public function createWorkflowItemEvents($workflowItems, $data) {
 		foreach ($workflowItems as $workflowItem) {
 			$workflowItemEvent['WorkflowItemEvent']['workflow_item_id'] = $workflowItem['id'];
 			$workflowItemEvent['WorkflowItemEvent']['data'] = $data;
@@ -120,13 +120,13 @@ class WorkflowEvent extends AppModel {
 	}
 	
 	
-	function getTriggerTime($delay) {
+	public function getTriggerTime($delay) {
 		return date('Y-m-d H:i:s', strtotime('+'.$delay.' minutes', time()));
 	}
 	
 	
 	
-	function handleWorkflowItemEvents() { 
+	public function handleWorkflowItemEvents() { 
 		$workflowItemEvents = $this->Workflow->WorkflowItem->WorkflowItemEvent->find('all', array(
 			'conditions' => array(
 				'WorkflowItemEvent.is_triggered' => 0,
@@ -154,7 +154,7 @@ class WorkflowEvent extends AppModel {
  * @params {workflowItemEvents}		The events and related items that need to be triggered.
  * @todo 							This only handles model events right now, needs to be upgraded to include controller.
  */ 
-	function triggerWorkflowItemEvents($workflowItemEvents) {
+	public function triggerWorkflowItemEvents($workflowItemEvents) {
 		$n = 0;
 		foreach ($workflowItemEvents as $workflowItemEvent) {
 			$plugin = $workflowItemEvent['WorkflowItem']['plugin'];
@@ -190,14 +190,14 @@ class WorkflowEvent extends AppModel {
 	
 	
 	
-	/**
-	 * This function creates a single data array from a map, and a string of data (NOTE: The formatting for both is very particular.  You must have specific keys, and the string of data must be in a format created by serialize(array); 
-	 * @param {array}		An array with the keys map, and data.  Data is actual data to use (as in, real values that will get input into the new data string), and map contains directions for where to get data from the data string of the next parameter.
-	 * @param {string}		A string, which is formatted using this function : serialize(array);	
-	 * @return {array}		Returns a merged array consisting of all real values.
-	 * @todo				If there is hasMany relationship data inluded in data we only call to the numeric array in the map.  I do envision a time when we may want to have a workflowevent created for every hasMany item so we will eventually need to code support for that. 
-	 */
-	function parseValues($values, $data) {
+/**
+ * This function creates a single data array from a map, and a string of data (NOTE: The formatting for both is very particular.  You must have specific keys, and the string of data must be in a format created by serialize(array); 
+ * @param {array}		An array with the keys map, and data.  Data is actual data to use (as in, real values that will get input into the new data string), and map contains directions for where to get data from the data string of the next parameter.
+ * @param {string}		A string, which is formatted using this function : serialize(array);	
+ * @return {array}		Returns a merged array consisting of all real values.
+ * @todo				If there is hasMany relationship data inluded in data we only call to the numeric array in the map.  I do envision a time when we may want to have a workflowevent created for every hasMany item so we will eventually need to code support for that. 
+ */
+	public function parseValues($values, $data) {
 		$values = parse_ini_string($values, true);
 		$data = unserialize($data);
 		$finalData = !empty($values['data']) ? Set::merge($data, $values['data']) : $data;

@@ -1,15 +1,15 @@
 <?php
-class WorkflowsController extends AppController {
+class WorkflowsController extends WorkflowsAppController {
 
 	public $name = 'Workflows';
 	public $uses = 'Workflows.Workflow';
 
-	function index() {
+	public function index() {
 		$this->Workflow->recursive = 0;
 		$this->set('workflows', $this->paginate());
 	}
 
-	function view($id = null) {
+	public function view($id = null) {
 		echo 'Add a tab or an index of related workflow_items to this page.';
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid workflow', true));
@@ -18,7 +18,7 @@ class WorkflowsController extends AppController {
 		$this->set('workflow', $this->Workflow->read(null, $id));
 	}
 
-	function add() {
+	public function add() {
 		if (!empty($this->request->data)) {
 			try {
 				$this->Workflow->add($this->request->data);
@@ -35,7 +35,7 @@ class WorkflowsController extends AppController {
 		$this->set('title_for_layout', __('Workflow Add Form', true)); 
 	}
 
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid workflow', true));
 			$this->redirect(array('action' => 'index'));
@@ -57,7 +57,7 @@ class WorkflowsController extends AppController {
 		$this->set(compact('conditions', 'creators', 'modifiers'));
 	}
 
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for workflow', true));
 			$this->redirect(array('action'=>'index'));
@@ -70,9 +70,14 @@ class WorkflowsController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 	
-	function list_models($plugin = null) {
-		$pluginPath = App::pluginPath($plugin);
-		$models = App::objects('model', $pluginPath.'models');
+/**
+ * List Models method
+ *
+ * @param string
+ * @return array
+ */
+	public function list_models($plugin = null) {
+		$models = App::objects($plugin.'.Model');
 		$i = 0;
 		foreach ($models as $model) :
 			$out[$i]['value'] = $model;
@@ -80,13 +85,7 @@ class WorkflowsController extends AppController {
 			$i++;
 		endforeach;
 		
-		if (!empty($out)) {
-			echo json_encode($out);
-		} else {
-			echo 'broken';
-		}
-		$this->layout = false;
-		$this->render(false);
+		$this->set(compact('out'));
 	}
 }
 ?>

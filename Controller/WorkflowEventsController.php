@@ -1,5 +1,5 @@
 <?php
-class WorkflowEventsController extends AppController {
+class WorkflowEventsController extends WorkflowsAppController {
 
 	public $name = 'WorkflowEvents';
 	public $uses = 'Workflows.WorkflowEvent';
@@ -11,7 +11,7 @@ class WorkflowEventsController extends AppController {
  * @return {string} 		returns the events (both workflow, and workflow item) that were triggered.
  * @return [bool}			returns a success variable set to true or false.
  */
-	function run_queue() {
+	public function run_queue() {
 		if ($triggered = $this->WorkflowEvent->runQueue()) {
 			$this->set('triggered', $triggered);
 		} else {
@@ -20,12 +20,12 @@ class WorkflowEventsController extends AppController {
 		$this->layout = 'ajax';
 	}
 
-	function index() {
+	public function index() {
 		$this->WorkflowEvent->recursive = 0;
 		$this->set('workflowEvents', $this->paginate());
 	}
 
-	function view($id = null) {
+	public function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid workflow event', true));
 			$this->redirect(array('action' => 'index'));
@@ -33,7 +33,7 @@ class WorkflowEventsController extends AppController {
 		$this->set('workflowEvent', $this->WorkflowEvent->read(null, $id));
 	}
 
-	function add() {
+	public function add() {
 		if (!empty($this->request->data)) {
 			$this->WorkflowEvent->create();
 			if ($this->WorkflowEvent->save($this->request->data)) {
@@ -49,7 +49,7 @@ class WorkflowEventsController extends AppController {
 		$this->set(compact('workflows', 'creators', 'modifers'));
 	}
 
-	function edit($id = null) {
+	public function edit($id = null) {
 		if (!$id && empty($this->request->data)) {
 			$this->Session->setFlash(__('Invalid workflow event', true));
 			$this->redirect(array('action' => 'index'));
@@ -71,7 +71,7 @@ class WorkflowEventsController extends AppController {
 		$this->set(compact('workflows', 'creators', 'modifers'));
 	}
 
-	function delete($id = null) {
+	public function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for workflow event', true));
 			$this->redirect(array('action'=>'index'));

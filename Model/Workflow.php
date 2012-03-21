@@ -1,8 +1,8 @@
 <?php
-class Workflow extends AppModel {
-	var $name = 'Workflow';
-	var $displayField = 'name';
-	var $validate = array(
+class Workflow extends WorkflowsAppModel {
+	public $name = 'Workflow';
+	public $displayField = 'name';
+	public $validate = array(
 		'name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
@@ -36,7 +36,7 @@ class Workflow extends AppModel {
 	);
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
-	var $belongsTo = array(
+	public $belongsTo = array(
 		'Condition' => array(
 			'className' => 'Condition',
 			'foreignKey' => 'condition_id',
@@ -60,7 +60,7 @@ class Workflow extends AppModel {
 		)
 	);
 
-	var $hasMany = array(
+	public $hasMany = array(
 		'WorkflowEvent' => array(
 			'className' => 'Workflows.WorkflowEvent',
 			'foreignKey' => 'workflow_id',
@@ -90,7 +90,7 @@ class Workflow extends AppModel {
 	);
 	
 	
-	function triggered($id, $data) {
+	public function triggered($id, $data) {
 		$workflows = $this->find('all', array(
 			'conditions' => array(
 				'Workflow.condition_id' => $id,
@@ -114,7 +114,7 @@ class Workflow extends AppModel {
 	}
 		
 	
-	function add($data = array()) {
+	public function add($data = array()) {
 		$data = $this->cleanInputData($data);
 		if ($this->saveAll($data)) {
 			return true;
@@ -124,7 +124,7 @@ class Workflow extends AppModel {
 	}
 	
 	
-	function cleanInputData($data) {
+	public function cleanInputData($data) {
 		
 		if (!empty($data['Condition']['description'])) :
 			$last_space = strrpos(substr($data['Condition']['description'], 0, 30), ' ');
@@ -142,11 +142,11 @@ class Workflow extends AppModel {
 	}
 	
 	
-	/**
-	 * Return an array of plugins which are available to use with workflows
-	 */
-	function plugins() {
-		foreach (App::objects('plugin') as $plugin) :
+/**
+ * Return an array of plugins which are available to use with workflows
+ */
+	public function plugins() {
+		foreach (CakePlugin::loaded() as $plugin) :
 			$plugins[$plugin] = Inflector::humanize(Inflector::underscore($plugin));
 		endforeach;
 
