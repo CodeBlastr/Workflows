@@ -163,18 +163,21 @@ class WorkflowEvent extends WorkflowsAppModel {
 			
 			# Change the values to an array. Required keys = data and map!
 			$values = $this->parseValues($workflowItemEvent['WorkflowItem']['values'], $workflowItemEvent['WorkflowItemEvent']['data']);
-			
 			#import the model and fire the function
-			$importModel = (!empty($plugin) ? $plugin.'.'.$model : $model);
-			App::import('Model', $importModel);
-			$this->$model = new $model();
+			if (!empty($model)) {
+				$importModel = (!empty($plugin) ? $plugin.'.'.$model : $model);
+				App::import('Model', $importModel);
+				$this->$model = new $model();
+			}
 			
 			# This is the actual firing of the database driven event function.
-			$this->$model->$action($values);
+			if (!empty($values)) { $this->$model->$action($values); }
 			
 			#now set the event to triggered
 			$workflowItemEvent['WorkflowItemEvent']['is_triggered'] = 1;
 			$workflowItemEvent['WorkflowItemEvent']['triggered_time'] = date('Y-m-d H:i:s');
+			debug($values);
+			$workflowItemEvent['WorkflowItemEvent']['is_failed'] = !empty($values) ? 0 : 1;
 			if ($this->Workflow->WorkflowItem->WorkflowItemEvent->save($workflowItemEvent)) {
 				$n = 0;
 			} else {
@@ -199,20 +202,30 @@ class WorkflowEvent extends WorkflowsAppModel {
  */
 	public function parseValues($values, $data) {
 		$values = parse_ini_string($values, true);
-		$data = unserialize($data);
+		$data = @unserialize($data);
 		$finalData = !empty($values['data']) ? Set::merge($data, $values['data']) : $data;
+		
 		if (!empty($values['map'])) {
 			$newModel = key($values['map']);
 			foreach ($values['map'][$newModel] as $key => $value) {
 				$thisData = explode('.', $value);
 				if (is_numeric($thisData[1])) {
 					# this supports hasMany relationship data
-					$parsedData[$newModel][$key] = $data[$thisData[0]][$thisData[1]][$thisData[2]];	
+					if (isset($data[$thisData[0]][$thisData[1]][$thisData[2]])) {
+						$parsedData[$newModel][$key] = $data[$thisData[0]][$thisData[1]][$thisData[2]];
+					}
 				} else {
-					$parsedData[$newModel][$key] = $data[$thisData[0]][$thisData[1]];	
+					if (isset($data[$thisData[0]][$thisData[1]])) {
+						$parsedData[$newModel][$key] = $data[$thisData[0]][$thisData[1]];
+					}
 				}
+			}			
+			if (empty($finalData) && empty($parsedData)) {
+				// if both are empty then something is wrong
+				return null;
+			} else {
+				$finalData = Set::merge($finalData, $parsedData);
 			}
-			$finalData = Set::merge($finalData, $parsedData);
 		}
 		return $finalData;
 	}
