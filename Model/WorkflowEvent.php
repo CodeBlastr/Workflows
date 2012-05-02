@@ -27,7 +27,7 @@ class WorkflowEvent extends WorkflowsAppModel {
 		)
 	);
 
-/** 
+/**
  * Creates work flow items events, sets untriggered work flows to triggered, fires untriggered workflow item events, and sets fired workflow item events to triggered.
  *
  * @return [bool}			returns true if run, false if there was an error
@@ -35,7 +35,7 @@ class WorkflowEvent extends WorkflowsAppModel {
  */
 	public function runQueue() {
 		$orig_id = $this->id;
-		
+
 		$workflowEvents = $this->find('all', array(
 			'conditions' => array(
 				'WorkflowEvent.is_triggered' => 0,
@@ -47,28 +47,28 @@ class WorkflowEvent extends WorkflowsAppModel {
 				),
 			));
 		$eventOutput = $workflowEvents;
-		
+
 		if (!empty($workflowEvents)) {
 			if ($this->handleWorkflowEvents($workflowEvents)) {
 				#return true; // do nothing here, except NOT return anything
 			} else {
 				$i = 1; // could be return false;
 			}
-		} 
+		}
 		# handle the item events second so that any just created get fired immediately '
-		$this->handleWorkflowItemEvents(); 
+		$this->handleWorkflowItemEvents();
 		$events = (!empty($eventOutput) && !empty($this->workflowItemEvents) ? array_merge($eventOutput, $this->workflowItemEvents) : $this->workflowItemEvents);
 		$this->id = $orig_id;
-		
+
 		if (!empty($events)) {
 			return $events;
 		} else {
 			return false;
 		}
 	}
-	
-	
-	
+
+
+
 	public function handleWorkflowEvents($workflowEvents) {
 		foreach ($workflowEvents as $workflowEvent) {
 			#$this->handleWorkflowEvent($workflowEvent['WorkflowEvent']['id']);
@@ -84,7 +84,7 @@ class WorkflowEvent extends WorkflowsAppModel {
 			}
 		}
 	}
-	
+
 
 /**
  * Function to create workflow item events (these are the events which trigger items)
@@ -111,22 +111,22 @@ class WorkflowEvent extends WorkflowsAppModel {
 				# roll back
 				$this->Workflow->WorkflowItem->WorkflowItemEvent->deleteAll(array(
 					'WorkflowItemEvent.id' => $itemEvents,
-					), false);																			
+					), false);
 				$return = false;
 				break;
 			}
 		}
 		return $return;
 	}
-	
-	
+
+
 	public function getTriggerTime($delay) {
 		return date('Y-m-d H:i:s', strtotime('+'.$delay.' minutes', time()));
 	}
-	
-	
-	
-	public function handleWorkflowItemEvents() { 
+
+
+
+	public function handleWorkflowItemEvents() {
 		$workflowItemEvents = $this->Workflow->WorkflowItem->WorkflowItemEvent->find('all', array(
 			'conditions' => array(
 				'WorkflowItemEvent.is_triggered' => 0,
@@ -153,14 +153,14 @@ class WorkflowEvent extends WorkflowsAppModel {
  *
  * @params {workflowItemEvents}		The events and related items that need to be triggered.
  * @todo 							This only handles model events right now, needs to be upgraded to include controller.
- */ 
+ */
 	public function triggerWorkflowItemEvents($workflowItemEvents) {
 		$n = 0;
 		foreach ($workflowItemEvents as $workflowItemEvent) {
 			$plugin = $workflowItemEvent['WorkflowItem']['plugin'];
 			$model = $workflowItemEvent['WorkflowItem']['model'];
 			$action = $workflowItemEvent['WorkflowItem']['action'];
-			
+
 			# Change the values to an array. Required keys = data and map!
 			$values = $this->parseValues($workflowItemEvent['WorkflowItem']['values'], $workflowItemEvent['WorkflowItemEvent']['data']);
 			#import the model and fire the function
@@ -169,14 +169,13 @@ class WorkflowEvent extends WorkflowsAppModel {
 				App::import('Model', $importModel);
 				$this->$model = new $model();
 			}
-			
+
 			# This is the actual firing of the database driven event function.
 			if (!empty($values)) { $this->$model->$action($values); }
-			
+
 			#now set the event to triggered
 			$workflowItemEvent['WorkflowItemEvent']['is_triggered'] = 1;
 			$workflowItemEvent['WorkflowItemEvent']['triggered_time'] = date('Y-m-d H:i:s');
-			debug($values);
 			$workflowItemEvent['WorkflowItemEvent']['is_failed'] = !empty($values) ? 0 : 1;
 			if ($this->Workflow->WorkflowItem->WorkflowItemEvent->save($workflowItemEvent)) {
 				$n = 0;
@@ -190,21 +189,21 @@ class WorkflowEvent extends WorkflowsAppModel {
 			return false;
 		}
 	}
-	
-	
-	
+
+
+
 /**
- * This function creates a single data array from a map, and a string of data (NOTE: The formatting for both is very particular.  You must have specific keys, and the string of data must be in a format created by serialize(array); 
+ * This function creates a single data array from a map, and a string of data (NOTE: The formatting for both is very particular.  You must have specific keys, and the string of data must be in a format created by serialize(array);
  * @param {array}		An array with the keys map, and data.  Data is actual data to use (as in, real values that will get input into the new data string), and map contains directions for where to get data from the data string of the next parameter.
- * @param {string}		A string, which is formatted using this function : serialize(array);	
+ * @param {string}		A string, which is formatted using this function : serialize(array);
  * @return {array}		Returns a merged array consisting of all real values.
- * @todo				If there is hasMany relationship data inluded in data we only call to the numeric array in the map.  I do envision a time when we may want to have a workflowevent created for every hasMany item so we will eventually need to code support for that. 
+ * @todo				If there is hasMany relationship data inluded in data we only call to the numeric array in the map.  I do envision a time when we may want to have a workflowevent created for every hasMany item so we will eventually need to code support for that.
  */
 	public function parseValues($values, $data) {
 		$values = parse_ini_string($values, true);
 		$data = @unserialize($data);
 		$finalData = !empty($values['data']) ? Set::merge($data, $values['data']) : $data;
-		
+
 		if (!empty($values['map'])) {
 			$newModel = key($values['map']);
 			foreach ($values['map'][$newModel] as $key => $value) {
@@ -219,7 +218,7 @@ class WorkflowEvent extends WorkflowsAppModel {
 						$parsedData[$newModel][$key] = $data[$thisData[0]][$thisData[1]];
 					}
 				}
-			}			
+			}
 			if (empty($finalData) && empty($parsedData)) {
 				// if both are empty then something is wrong
 				return null;
@@ -229,6 +228,6 @@ class WorkflowEvent extends WorkflowsAppModel {
 		}
 		return $finalData;
 	}
-	
+
 }
 ?>
