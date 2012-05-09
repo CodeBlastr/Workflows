@@ -4,33 +4,13 @@
  *
  */
 class WorkflowItemEventFixture extends CakeTestFixture {
+	
 /**
  * Import
  *
  * @var array
  */
-	public $import = array('connection' => 'test');
-
-/**
- * Fields
- *
- * @var array
- */
-	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
-		'workflow_item_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'index'),
-		'data' => array('type' => 'text', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'trigger_time' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'is_triggered' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
-		'triggered_time' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'is_failed' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
-		'creator_id' => array('type' => 'integer', 'null' => true, 'default' => NULL),
-		'modifier_id' => array('type' => 'integer', 'null' => true, 'default' => NULL),
-		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'workflow_item_id' => array('column' => 'workflow_item_id', 'unique' => 0)),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
-	);
+	public $import = array('config' => 'Workflows.WorkflowItemEvent');
 
 /**
  * Records
