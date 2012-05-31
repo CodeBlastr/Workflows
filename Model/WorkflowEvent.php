@@ -165,13 +165,13 @@ class WorkflowEvent extends WorkflowsAppModel {
 			$values = $this->parseValues($workflowItemEvent['WorkflowItem']['values'], $workflowItemEvent['WorkflowItemEvent']['data']);
 			#import the model and fire the function
 			if (!empty($model)) {
-				$importModel = (!empty($plugin) ? $plugin.'.'.$model : $model);
-				App::import('Model', $importModel);
-				$this->$model = new $model();
+				$path = (!empty($plugin) ? $plugin . '.Model' : 'Model');
+				App::uses($model, $path);
+				$Model = new $model();
 			}
 
 			# This is the actual firing of the database driven event function.
-			if (!empty($values)) { $this->$model->$action($values); }
+			if (!empty($values)) { $Model->$action($values); }
 
 			#now set the event to triggered
 			$workflowItemEvent['WorkflowItemEvent']['is_triggered'] = 1;
@@ -182,6 +182,10 @@ class WorkflowEvent extends WorkflowsAppModel {
 			} else {
 				$n++;
 			}
+            unset($plugin);
+            unset($model);
+            unset($action);
+            unset($values);
 		}
 		if ($n < 1) {
 			return true; // unless we forced triggered actions to return true we cannot actually check if they were fired, and it doesn't seem likely to force a return true value, because this could literraly be any action in the entire application.
