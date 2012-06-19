@@ -88,8 +88,8 @@ class Workflow extends WorkflowsAppModel {
 			'counterQuery' => ''
 		)
 	);
-	
-	
+
+
 	public function triggered($id, $data) {
 		$workflows = $this->find('all', array(
 			'conditions' => array(
@@ -112,8 +112,8 @@ class Workflow extends WorkflowsAppModel {
 			return false;
 		}
 	}
-		
-	
+
+
 	public function add($data = array()) {
 		$data = $this->cleanInputData($data);
 		if ($this->saveAll($data)) {
@@ -122,10 +122,10 @@ class Workflow extends WorkflowsAppModel {
 			throw new Exception(__d('workflows', 'Workflow save failed.', true));
 		}
 	}
-	
-	
+
+
 	public function cleanInputData($data) {
-		
+
 		if (!empty($data['Condition']['description'])) :
 			$last_space = strrpos(substr($data['Condition']['description'], 0, 30), ' ');
 			$trimmed_text = substr($data['Condition']['description'], 0, $last_space);
@@ -133,15 +133,15 @@ class Workflow extends WorkflowsAppModel {
 			$data['Workflow']['name'] = $trimmed_text;
 			$data['Workflow']['description'] = $data['Condition']['description'];
 		endif;
-		
+
 		if (!empty($data['Workflow']['plugin'])) :
 			$data['Condition']['plugin'] = $data['Workflow']['plugin'];
 		endif;
-		
+
 		return $data;
 	}
-	
-	
+
+
 /**
  * Return an array of plugins which are available to use with workflows
  */
@@ -162,7 +162,7 @@ class Workflow extends WorkflowsAppModel {
 		unset($plugins['Maps']);
 		unset($plugins['Menus']);
 		unset($plugins['News']);
-		unset($plugins['Notifications']);
+		unset($plugins['Notifications']);// ?
 		unset($plugins['Privileges']);
 		unset($plugins['Recaptcha']);
 		unset($plugins['Reports']);
@@ -175,10 +175,10 @@ class Workflow extends WorkflowsAppModel {
 		unset($plugins['Tags']);
 		unset($plugins['Utils']);
 		unset($plugins['Workflows']);
-		
+
 		return $plugins;
 	}
-		
+
 
 }
 ?>
