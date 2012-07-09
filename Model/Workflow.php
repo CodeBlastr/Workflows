@@ -158,7 +158,6 @@ class Workflow extends WorkflowsAppModel {
 		unset($plugins['Favorites']);
 		unset($plugins['Forms']);
 		unset($plugins['Forum']);
-		unset($plugins['Locations']);
 		unset($plugins['Maps']);
 		unset($plugins['Menus']);
 		unset($plugins['News']);
