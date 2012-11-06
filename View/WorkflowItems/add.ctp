@@ -18,7 +18,7 @@ echo $this->Form->create('WorkflowItem', array('url' => '/workflows/workflow_ite
 OrderItem[status] = "pending"
 
 [map]
-OrderItem[assignee_id] = CatalogItem.owner_id'));
+OrderItem[assignee_id] = Product.owner_id'));
 		echo $this->Form->input('WorkflowItem.delay_time');
 		echo $this->Form->input('WorkflowItem.order');	?>
 	</fieldset>
