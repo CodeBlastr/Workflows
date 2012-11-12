@@ -13,6 +13,8 @@ class WorkflowEventModelTestCase extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
+		'app.Condition',
+		'plugin.Users.User',
 		'plugin.Workflows.Workflow',
 		'plugin.Workflows.WorkflowEvent',
 		'plugin.Workflows.WorkflowItem',
@@ -30,6 +32,19 @@ class WorkflowEventModelTestCase extends CakeTestCase {
 		$this->WorkflowEvent = ClassRegistry::init('Workflows.WorkflowEvent');
 		$this->WorkflowItem = ClassRegistry::init('Workflows.WorkflowItem');
 		$this->WorkflowItemEvent = ClassRegistry::init('Workflows.WorkflowItemEvent');
+	}
+
+/**
+ * tearDown method
+ *
+ * @return void
+ */
+	public function tearDown() {
+		unset($this->WorkflowEvent);
+		unset($this->WorkflowItem);
+		unset($this->WorkflowItemEvent);
+
+		parent::tearDown();
 	}
 	
 	
@@ -71,17 +86,6 @@ class WorkflowEventModelTestCase extends CakeTestCase {
 		$result = $this->WorkflowItemEvent->find('first');
 		$this->assertEqual(true, $result['WorkflowItemEvent']['is_triggered']);
 		$this->assertEqual(true, $result['WorkflowItemEvent']['is_failed']); // that workflow item event should now be triggered is true, and failed is true
-	}
-
-/**
- * tearDown method
- *
- * @return void
- */
-	public function tearDown() {
-		unset($this->WorkflowItemEvent);
-
-		parent::tearDown();
 	}
 
 }
