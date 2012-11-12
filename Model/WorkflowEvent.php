@@ -159,9 +159,13 @@ class WorkflowEvent extends WorkflowsAppModel {
             $values = $this->parseValues($workflowItemEvent['WorkflowItem']['values'], $workflowItemEvent['WorkflowItemEvent']['data']);
             #import the model and fire the function
             if (!empty($model)) {
-                $path = (!empty($plugin) ? $plugin . '.Model' : 'Model');
-                App::uses($model, $path);
-                $Model = new $model();
+                if (in_array($plugin, CakePlugin::loaded())) {
+                    App::uses($model, $plugin . '.Model');
+                    $Model = class_exists($model) ? new $model() : null;
+                } else {
+                    App::uses($model, 'Model');
+                    $Model = class_exists($model) ? new $model() : null;
+                }
             }
 
             # This is the actual firing of the database driven event function.

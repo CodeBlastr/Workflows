@@ -13,7 +13,10 @@ class WorkflowEventModelTestCase extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.Workflows.workflow_item_event',
+		'plugin.Workflows.Workflow',
+		'plugin.Workflows.WorkflowEvent',
+		'plugin.Workflows.WorkflowItem',
+		'plugin.Workflows.WorkflowItemEvent',
 		);
 
 /**
