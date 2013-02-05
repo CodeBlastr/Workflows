@@ -7,6 +7,7 @@ class WorkflowItemsController extends WorkflowsAppController {
 	public function index() {
 		$this->WorkflowItem->recursive = 0;
 		$this->set('workflowItems', $this->paginate());
+		$this->layout = 'default';
 	}
 
 	public function view($id = null) {
@@ -15,6 +16,7 @@ class WorkflowItemsController extends WorkflowsAppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('workflowItem', $this->WorkflowItem->read(null, $id));
+		$this->layout = 'default';
 	}
 
 	public function add($workflowId = null) {
@@ -50,6 +52,7 @@ class WorkflowItemsController extends WorkflowsAppController {
 			$updated = !empty($this->request->data['Condition']['is_update']) ? 'updated, ' : null;
 			$deleted = !empty($this->request->data['Condition']['is_delete']) ? 'deleted, ' : null;
 			$this->set(compact('created', 'viewed', 'updated', 'deleted'));
+			$this->layout = 'default';
 		}
 	}
 
@@ -74,6 +77,7 @@ class WorkflowItemsController extends WorkflowsAppController {
 		$creators = $this->WorkflowItem->Creator->find('list');
 		$modifiers = $this->WorkflowItem->Modifier->find('list');
 		$this->set(compact('workflows', 'parentWorkflowItems', 'creators', 'modifiers'));
+		$this->layout = 'default';
 	}
 
 	public function delete($id = null) {
@@ -89,4 +93,3 @@ class WorkflowItemsController extends WorkflowsAppController {
 		$this->redirect(array('action' => 'index'));
 	}
 }
-?>
