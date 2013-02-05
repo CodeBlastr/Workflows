@@ -7,6 +7,7 @@ class WorkflowsController extends WorkflowsAppController {
 	public function index() {
 		$this->Workflow->recursive = 0;
 		$this->set('workflows', $this->paginate());
+		$this->layout = 'default';
 	}
 
 	public function view($id = null) {
@@ -32,7 +33,8 @@ class WorkflowsController extends WorkflowsAppController {
 		
 		$this->set('plugins', $this->Workflow->plugins());
 		$this->set('page_title_for_layout', __('Workflows', true));
-		$this->set('title_for_layout', __('Workflow Add Form', true)); 
+		$this->set('title_for_layout', __('Workflow Add Form', true));
+		$this->layout = 'default';
 	}
 
 	public function edit($id = null) {
@@ -55,6 +57,7 @@ class WorkflowsController extends WorkflowsAppController {
 		$creators = $this->Workflow->Creator->find('list');
 		$modifiers = $this->Workflow->Modifier->find('list');
 		$this->set(compact('conditions', 'creators', 'modifiers'));
+		$this->layout = 'default';
 	}
 
 	public function delete($id = null) {
@@ -88,4 +91,3 @@ class WorkflowsController extends WorkflowsAppController {
 		$this->set(compact('out'));
 	}
 }
-?>
